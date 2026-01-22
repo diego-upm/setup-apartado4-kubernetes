@@ -1,0 +1,57 @@
+version: "3.8"
+
+services:
+  productpage:
+    container_name: productpage_cdps_19
+    image: cdps-productpage:g19
+    build:
+      context: ..
+      dockerfile: bloque3/productpage/Dockerfile
+    ports:
+      - "9095:9080"
+    environment:
+      TEAM_ID: "19"
+      DETAILS_HOSTNAME: details
+      DETAILS_PORT: 7070
+      REVIEWS_HOSTNAME: reviews
+      REVIEWS_PORT: 9080
+    networks:
+      - cdps-net
+
+  details:
+    container_name: details_cdps_19
+    image: cdps-details:g19
+    build:
+      context: ..
+      dockerfile: bloque3/details/Dockerfile
+    environment:
+      ENABLE_EXTERNAL_BOOK_SERVICE: "true"
+    networks:
+      - cdps-net
+
+  ratings:
+    container_name: ratings_cdps_19
+    image: cdps-ratings:g19
+    build:
+      context: ..
+      dockerfile: bloque3/ratings/Dockerfile
+    environment:
+      APP_VERSION: v1
+    networks:
+      - cdps-net
+
+  reviews:
+    container_name: reviews_cdps_19
+    image: cdps-reviews:g19
+    build:
+      context: ../bookinfo/src/reviews/reviews-wlpcfg
+      dockerfile: Dockerfile
+    environment:
+      ENABLE_RATINGS: "true"
+      SERVICE_VERSION: v1
+    networks:
+      - cdps-net
+
+networks:
+  cdps-net:
+    driver: bridge
