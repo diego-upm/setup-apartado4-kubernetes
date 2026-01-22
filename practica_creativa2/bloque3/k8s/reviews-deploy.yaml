@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: reviews-deploy
+  namespace: cdps-19
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: reviews
+  template:
+    metadata:
+      labels:
+        app: reviews
+    spec:
+      containers:
+      - name: reviews
+        image: cdps-reviews:g19
+        ports:
+        - containerPort: 9080
+        env:
+        - name: SERVICE_VERSION
+          value: "v3"
+        - name: ENABLE_RATINGS
+          value: "true"

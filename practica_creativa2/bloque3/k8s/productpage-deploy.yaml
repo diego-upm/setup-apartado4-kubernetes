@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: productpage-deploy
+  namespace: cdps-19
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: productpage
+  template:
+    metadata:
+      labels:
+        app: productpage
+    spec:
+      containers:
+      - name: productpage
+        image: cdps-productpage:g19
+        ports:
+        - containerPort: 9080
+        env:
+        - name: TEAM_ID
+          value: "19"
+        - name: DETAILS_HOSTNAME
+          value: details-svc
+        - name: DETAILS_SERVICE_PORT
+          value: "7070"
+        - name: REVIEWS_HOSTNAME
+          value: reviews-svc
+        - name: REVIEWS_SERVICE_PORT
+          value: "9080"
+
+
+
+
+
